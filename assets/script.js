@@ -21,6 +21,7 @@ var zomatoArray = []
 var results
 var zomatoData = []
 var image = "./assets/imgs/Restaurantforkandknifefreeicon2.png"
+var imageZ = "./assets/imgs/Restaurantforkandknifefreeicon2Z.png"
 var getDirectons = "https://www.google.com/maps/dir/"
 
 //styles for map
@@ -146,7 +147,12 @@ function zomatoCall() {
                 zomatoData.push(restuarantData)
                 zomatoArray.push(response.restaurants[i].restaurant.name)      
             }
+            /*
             compareArrays(restaurantsArray, zomatoData)
+            */          
+            // compare restaurantsArray with zomatoArray. previously the restaurantsArray was compared with
+            // zomatoData, which caused removal of Zomato icons. Test Case: Fox & Goose Public House, Sacramento
+            compareArrays(restaurantsArray, zomatoArray)
         })      
     }
 }
@@ -194,7 +200,14 @@ function initMap() {
         var marker = new google.maps.Marker({
             map: map,
             position: {lat: place.latitude, lng: place.longitude},
+            /*            
             icon: image
+            */
+            // imageZ is a transparent icon that is placed over the fork and knife icon. it prevents image
+            // registration issues that otherwise occur if the Zomato API icon was placed near the
+            // Google API icon, but misaligned by a number of pixels. though not visible, this icon is active.
+            // it provides the restaurant infoWindow with information pulled from the Zomato API.
+            icon: imageZ
         })
         google.maps.event.addListener(marker, 'click', function(){
             console.log(place)
